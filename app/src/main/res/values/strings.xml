@@ -2,5 +2,8 @@
     <string name="app_name">TwitterGram</string>
     <string name="nickname">Nickname</string>
     <string name="password">Password</string>
-    <string name="login">Login</string>
+    <string name="login">LOGIN</string>
+    <string name="newUser">Not a Member yet? Sign Up here.</string>
+
+    <string name="closebutton">Close Button for Activity</string>
 </resources>
