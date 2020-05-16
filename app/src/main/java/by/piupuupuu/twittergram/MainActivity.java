@@ -10,7 +10,6 @@ import androidx.fragment.app.FragmentManager;
 import by.piupuupuu.twittergram.activity.fragment.LoginFragment;
 import by.piupuupuu.twittergram.activity.fragment.SingUpFragment;
 import by.piupuupuu.twittergram.cache.CacheService;
-import by.piupuupuu.twittergram.model.User;
 import lombok.Getter;
 
 @Getter
@@ -48,20 +47,7 @@ public class MainActivity extends AppCompatActivity {
         fragmentManager = getSupportFragmentManager();
         cacheService.setFilesDir(getFilesDir());
         Intent intent;
-        User user = cacheService.getUserFromCache();
-        String token = cacheService.getTokenFromCache();
-
-        if (user != null || token != null) {
-            System.out.println("this is tokennn" +
-                    "" + " " + token);
-            if (user != null) {
-                System.out.println("this is userrr" + user.toString());
-            }
-//            intent = new Intent(this, MainWallActivity.class);
-//            intent.putExtra(NICKNAME_KEY, user.toString() + " token " + token);
-//            startActivity(intent);
-        } else replaceLoginFragment();
-
+        replaceLoginFragment();
         findViewById(R.id.close_activity).setOnClickListener(
                 new View.OnClickListener() {
 
