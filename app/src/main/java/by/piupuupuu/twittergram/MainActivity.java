@@ -1,6 +1,6 @@
 package by.piupuupuu.twittergram;
 
-import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -9,15 +9,15 @@ import androidx.fragment.app.FragmentManager;
 
 import by.piupuupuu.twittergram.activity.fragment.LoginFragment;
 import by.piupuupuu.twittergram.activity.fragment.SingUpFragment;
-import by.piupuupuu.twittergram.service.AuthenticationService;
-import by.piupuupuu.twittergram.service.AuthenticationServiceImpl;
+import by.piupuupuu.twittergram.cache.CacheService;
+import lombok.Getter;
 
+@Getter
 public class MainActivity extends AppCompatActivity {
 
-    private AuthenticationService authService = new AuthenticationServiceImpl();
     public static final String NICKNAME_KEY = "nickname";
     private static FragmentManager fragmentManager;
-    public static Context mContext;
+    private CacheService cacheService = CacheService.getInstance();
 
 
     protected void replaceLoginFragment() {
@@ -39,8 +39,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        fragmentManager = getSupportFragmentManager();
 
+        init();
+    }
+
+    public void init() {
+        fragmentManager = getSupportFragmentManager();
+        cacheService.setFilesDir(getFilesDir());
+        Intent intent;
         replaceLoginFragment();
         findViewById(R.id.close_activity).setOnClickListener(
                 new View.OnClickListener() {
@@ -51,10 +57,5 @@ public class MainActivity extends AppCompatActivity {
 
                     }
                 });
-
-//        mContext = this.getApplicationContext();
-//        init();
     }
-
-
 }

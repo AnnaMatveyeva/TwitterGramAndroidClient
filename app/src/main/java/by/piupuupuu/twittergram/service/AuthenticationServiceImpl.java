@@ -1,5 +1,7 @@
 package by.piupuupuu.twittergram.service;
 
+import by.piupuupuu.twittergram.cache.CacheService;
+import by.piupuupuu.twittergram.model.User;
 import by.piupuupuu.twittergram.model.request.LoginRequest;
 import by.piupuupuu.twittergram.model.request.SingUpRequest;
 import by.piupuupuu.twittergram.model.response.LoginResponse;
@@ -10,6 +12,7 @@ import lombok.SneakyThrows;
 public class AuthenticationServiceImpl implements AuthenticationService {
 
     private static AuthenticationService instance;
+    private CacheService cacheService = CacheService.getInstance();
 
     public static AuthenticationService getInstance() {
         if (instance == null) {
@@ -23,7 +26,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public LoginResponse login(String nickname, String password) {
         LoginRequest request = new LoginRequest(nickname, password);
         AsyncLoginRequest asyncLoginRequest = new AsyncLoginRequest();
-        return asyncLoginRequest.execute(request).get();
+
+        LoginResponse loginResponse = asyncLoginRequest.execute(request).get();
+        cacheService.createTokenCache(loginResponse.getToken());
+        System.out.println("write token");
+        return loginResponse;
     }
 
     @Override
@@ -31,7 +38,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public LoginResponse singup(String nickname, String password, String confirmPass, String email) {
         SingUpRequest singUpRequest = new SingUpRequest(nickname, email, password, confirmPass);
         AsyncSingUpRequest asyncSingUpRequest = new AsyncSingUpRequest();
-        return asyncSingUpRequest.execute(singUpRequest).get();
+        LoginResponse loginResponse = asyncSingUpRequest.execute(singUpRequest).get();
+        cacheService.createTokenCache(loginResponse.getToken());
+        cacheService.createUserInfoCache(new User(nickname, email, password));
+        System.out.println("write userinfo and token");
+        return loginResponse;
     }
 
 
