@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
 import by.piupuupuu.twittergram.activity.fragment.LoginFragment;
+import by.piupuupuu.twittergram.activity.fragment.SingUpFragment;
 import by.piupuupuu.twittergram.service.AuthenticationService;
 import by.piupuupuu.twittergram.service.AuthenticationServiceImpl;
 
@@ -25,7 +26,15 @@ public class MainActivity extends AppCompatActivity {
         fragmentManager
                 .beginTransaction()
                 .replace(R.id.frameContainer, new LoginFragment(),
-                       "LoginFragment").commit();
+                        "LoginFragment")
+                .commit();
+    }
+
+    protected void replaceSingupFragment() {
+        fragmentManager
+                .beginTransaction()
+                .replace(R.id.frameContainer, new SingUpFragment(), "SingupFragment")
+                .commit();
     }
 
     @Override
@@ -34,8 +43,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         fragmentManager = getSupportFragmentManager();
 
-        replaceLoginFragment();
-
+//        replaceLoginFragment();
+//        replaceSingupFragment();
         findViewById(R.id.close_activity).setOnClickListener(
                 new View.OnClickListener() {
 

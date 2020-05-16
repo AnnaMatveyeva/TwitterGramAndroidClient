@@ -16,27 +16,27 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class LoginFragment extends Fragment {
+public class SingUpFragment extends Fragment {
     private View view;
     private EditText nickname, password;
-    private Button loginButton;
+    private Button singupBtn;
     private FragmentManager manager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.login_layout, container, false);
+        view = inflater.inflate(R.layout.singup_layout, container, false);
         init();
         return view;
     }
 
-    public LoginFragment() {
+    public SingUpFragment() {
     }
 
     private void init() {
         manager = getActivity().getSupportFragmentManager();
-        password = (EditText) view.findViewById(R.id.login_password);
-        loginButton = (Button) view.findViewById(R.id.loginBtn);
+        password = (EditText) view.findViewById(R.id.singup_password);
+        singupBtn = (Button) view.findViewById(R.id.signUpBtn);
 
 
     }

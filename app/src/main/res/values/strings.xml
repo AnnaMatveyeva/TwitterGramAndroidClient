@@ -6,4 +6,7 @@
     <string name="newUser">Not a Member yet? Sign Up here.</string>
 
     <string name="closebutton">Close Button for Activity</string>
+    <string name="signUp">SingUp</string>
+    <string name="email">Email</string>
+    <string name="confirmPassword">Confirm password</string>
 </resources>
