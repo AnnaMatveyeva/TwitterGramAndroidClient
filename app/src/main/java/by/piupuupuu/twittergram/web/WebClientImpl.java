@@ -19,7 +19,16 @@ public class WebClientImpl implements WebClient {
     private final String baseUrl = "http://10.0.2.2:8080/";
     private final RestTemplate restTemplate = new RestTemplate();
 
-    public WebClientImpl(){
+    private static WebClient instance;
+
+    public static WebClient getInstance() {
+        if (instance == null) {
+            instance = new WebClientImpl();
+        }
+        return instance;
+    }
+
+    private WebClientImpl() {
         restTemplate.getMessageConverters().add(new MappingJacksonHttpMessageConverter());
         List<HttpMessageConverter<?>> messageConverters = new ArrayList<>();
         messageConverters.add(new FormHttpMessageConverter());

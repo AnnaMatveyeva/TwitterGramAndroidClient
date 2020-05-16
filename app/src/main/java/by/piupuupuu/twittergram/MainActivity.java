@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         fragmentManager = getSupportFragmentManager();
 
-//        replaceLoginFragment();
+        replaceLoginFragment();
 //        replaceSingupFragment();
         findViewById(R.id.close_activity).setOnClickListener(
                 new View.OnClickListener() {
@@ -59,35 +59,5 @@ public class MainActivity extends AppCompatActivity {
 //        init();
     }
 
-//    private void init() {
-//        btnLogin = findViewById(R.id.btn_login);
-//        nicknameView = findViewById(R.id.nickname);
-//        passwordView = findViewById(R.id.password);
-//        System.out.println("app started");
-//        btnLogin.setOnClickListener(new View.OnClickListener() {
-//            @SneakyThrows
-//            @Override
-//            public void onClick(View v) {
-//                Editable nickname = nicknameView.getText();
-//                Editable password = passwordView.getText();
-//                LoginResponse loginResponse = new AsyncRequest()
-//                        .execute(nickname.toString(), password.toString())
-//                        .get();
-//
-//                Intent intent = new Intent(v.getContext(), TestActivity.class);
-//                intent.putExtra(NICKNAME_KEY, loginResponse.getNickname());
-//                startActivity(intent);
-//                System.out.println("onBtnClick");
-//            }
-//        });
-//    }
-//    class AsyncRequest extends AsyncTask<String, Integer, LoginResponse> {
-//
-//        @Override
-//        protected LoginResponse doInBackground(String... arg) {
-//            return authService.login(arg[0],arg[1]);
-//        }
-//
-//    }
 
 }
