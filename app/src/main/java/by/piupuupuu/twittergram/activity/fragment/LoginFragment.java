@@ -12,6 +12,7 @@ import androidx.fragment.app.FragmentManager;
 
 import by.piupuupuu.twittergram.MainActivity;
 import by.piupuupuu.twittergram.R;
+import by.piupuupuu.twittergram.model.response.LoginResponse;
 import by.piupuupuu.twittergram.service.AuthenticationService;
 import by.piupuupuu.twittergram.service.AuthenticationServiceImpl;
 import lombok.Getter;
@@ -56,7 +57,8 @@ public class LoginFragment extends Fragment {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                authenticationService.login(nickname.getText().toString(), password.getText().toString());
+                LoginResponse login = authenticationService.login(nickname.getText().toString(), password.getText().toString());
+                System.out.println(login.getToken());
             }
         });
 
