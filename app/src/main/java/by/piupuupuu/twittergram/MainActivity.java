@@ -16,9 +16,7 @@ public class MainActivity extends AppCompatActivity {
 
     private AuthenticationService authService = new AuthenticationServiceImpl();
     public static final String NICKNAME_KEY = "nickname";
-
     private static FragmentManager fragmentManager;
-
     public static Context mContext;
 
 
@@ -30,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
                 .commit();
     }
 
-    protected void replaceSingupFragment() {
+    public static void replaceSingupFragment() {
         fragmentManager
                 .beginTransaction()
                 .replace(R.id.frameContainer, new SingUpFragment(), "SingupFragment")
@@ -44,7 +42,6 @@ public class MainActivity extends AppCompatActivity {
         fragmentManager = getSupportFragmentManager();
 
         replaceLoginFragment();
-//        replaceSingupFragment();
         findViewById(R.id.close_activity).setOnClickListener(
                 new View.OnClickListener() {
 

@@ -10,6 +10,7 @@ import android.widget.EditText;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import by.piupuupuu.twittergram.MainActivity;
 import by.piupuupuu.twittergram.R;
 import by.piupuupuu.twittergram.service.AuthenticationService;
 import by.piupuupuu.twittergram.service.AuthenticationServiceImpl;
@@ -24,6 +25,7 @@ public class LoginFragment extends Fragment {
     private EditText password;
     private Button loginButton;
     private FragmentManager manager;
+    private Button createButton;
     private AuthenticationService authenticationService = AuthenticationServiceImpl.getInstance();
 
     @Override
@@ -42,6 +44,14 @@ public class LoginFragment extends Fragment {
         password = (EditText) view.findViewById(R.id.login_password);
         loginButton = (Button) view.findViewById(R.id.loginBtn);
         nickname = (EditText) view.findViewById(R.id.login_nickname);
+        createButton = view.findViewById(R.id.createAccount);
+
+        createButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MainActivity.replaceSingupFragment();
+            }
+        });
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
