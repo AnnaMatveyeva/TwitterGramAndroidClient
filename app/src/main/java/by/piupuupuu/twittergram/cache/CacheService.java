@@ -34,6 +34,7 @@ public class CacheService {
         if (userInfoCache != null) {
             try (BufferedWriter buff = new BufferedWriter(new FileWriter(userInfoCache))) {
                 buff.write(mapper.writeValueAsString(user));
+                buff.flush();
             }
             return userInfoCache;
         } else {
@@ -41,6 +42,7 @@ public class CacheService {
             if (userInfoCache.createNewFile()) {
                 try (BufferedWriter buff = new BufferedWriter(new FileWriter(userInfoCache))) {
                     buff.write(mapper.writeValueAsString(user));
+                    buff.flush();
                 }
             }
             return userInfoCache;
@@ -53,15 +55,14 @@ public class CacheService {
         if (tokenCache != null) {
             try (BufferedWriter buff = new BufferedWriter(new FileWriter(tokenCache))) {
                 buff.write(token);
+                buff.flush();
             }
             return tokenCache;
         } else {
             tokenCache = new File(filesDir.getPath().toString() + "/tokenFile.txt");
-
-            if (tokenCache.createNewFile()) {
-                try (BufferedWriter buff = new BufferedWriter(new FileWriter(tokenCache))) {
-                    buff.write(token);
-                }
+            try (BufferedWriter buff = new BufferedWriter(new FileWriter(tokenCache))) {
+                buff.write(token);
+                buff.flush();
             }
             return tokenCache;
         }
@@ -71,7 +72,6 @@ public class CacheService {
     public User getUserFromCache() {
         if (userInfoCache != null) {
             User user = mapper.readValue(userInfoCache, User.class);
-            System.out.println(user.toString());
             return user;
         }
         return null;
@@ -79,14 +79,19 @@ public class CacheService {
 
     @SneakyThrows
     public String getTokenFromCache() {
+
         if (tokenCache != null) {
             BufferedReader reader = new BufferedReader(new FileReader(tokenCache));
-
             String token = reader.readLine();
-            System.out.println("getToken");
+            reader.close();
             return token;
+        } else {
+            tokenCache = new File(filesDir.getPath().toString() + "/tokenFile.txt");
+            if (tokenCache.createNewFile()) {
+                return null;
+            } else return getTokenFromCache();
         }
-        return null;
+
     }
 
 

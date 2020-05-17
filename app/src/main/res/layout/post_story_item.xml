@@ -1,0 +1,107 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/relLayout1"
+        android:layout_width="match_parent"
+        android:outlineSpotShadowColor="@color/black"
+        android:layout_height="40dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/profile_photo"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            app:civ_border_color="@color/black"
+            app:civ_border_width="0.5dp" />
+
+
+        <TextView
+            android:id="@+id/username_story_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/profile_photo"
+            android:text="mitch.tabian"
+            android:textColor="@color/black"
+            android:textSize="22sp" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/story_itemText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="10dp"
+
+        android:paddingVertical="5dp"
+        android:text="Some"
+        android:fontFamily="monospace"
+        android:textColor="@color/black"
+        android:textSize="20sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:background="#50000000"
+        android:layout_height="1dp" />
+
+    <RelativeLayout
+        android:id="@+id/relLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_below="@+id/post_story"
+        android:outlineAmbientShadowColor="@color/black"
+        android:background="@color/white">
+
+        <RelativeLayout
+            android:id="@+id/heartLayout"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:background="@color/white">
+
+            <ImageView
+                android:id="@+id/image_heart_red"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="20dp"
+                android:src="@drawable/ic_heart_red"
+                android:visibility="invisible" />
+
+            <ImageView
+                android:id="@+id/image_heart"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="20dp"
+                android:src="@drawable/ic_heart_white"
+                android:visibility="visible" />
+
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/post_item_date"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingStart="30dp"
+            android:paddingTop="5dp"
+            android:fontFamily="monospace"
+            android:textColor="@color/black"
+            android:text="someText"
+            android:layout_toRightOf="@+id/heartLayout"
+            android:textSize="15sp" />
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:background="#000000"
+        android:layout_height="1dp" />
+
+</LinearLayout>

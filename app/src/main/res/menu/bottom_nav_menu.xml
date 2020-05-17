@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/home"
+        android:enabled="true"
+        android:icon="@drawable/home_icon_fore"
+        android:title="" />
+    <item
+        android:id="@+id/addPost"
+        android:enabled="true"
+        android:icon="@drawable/addiconfore"
+        android:title="" />
+    <item
+        android:id="@+id/search"
+        android:enabled="true"
+        android:icon="@drawable/searchicon"
+        android:title="" />
+
+    <item
+        android:id="@+id/profile"
+        android:enabled="true"
+        android:icon="@drawable/usericonfore"
+        android:title="" />
+
+</menu>

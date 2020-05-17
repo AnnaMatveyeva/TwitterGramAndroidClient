@@ -7,6 +7,7 @@ import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
+import by.piupuupuu.twittergram.activity.MainWallActivity;
 import by.piupuupuu.twittergram.activity.fragment.LoginFragment;
 import by.piupuupuu.twittergram.activity.fragment.SingUpFragment;
 import by.piupuupuu.twittergram.cache.CacheService;
@@ -33,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
                 .beginTransaction()
                 .replace(R.id.frameContainer, new SingUpFragment(), "SingupFragment")
                 .commit();
+
     }
 
     @Override
@@ -43,11 +45,25 @@ public class MainActivity extends AppCompatActivity {
         init();
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        finish();
+    }
+
     public void init() {
         fragmentManager = getSupportFragmentManager();
         cacheService.setFilesDir(getFilesDir());
         Intent intent;
-        replaceLoginFragment();
+        if (cacheService.getTokenFromCache() != null) {
+            intent = new Intent(this, MainWallActivity.class);
+            intent.putExtra(NICKNAME_KEY, cacheService.getTokenFromCache());
+            startActivity(intent);
+            finish();
+        } else {
+            replaceLoginFragment();
+        }
+
         findViewById(R.id.close_activity).setOnClickListener(
                 new View.OnClickListener() {
 
@@ -58,4 +74,6 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
     }
+
+
 }

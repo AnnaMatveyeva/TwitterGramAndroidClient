@@ -1,5 +1,6 @@
 package by.piupuupuu.twittergram.activity.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,11 +13,15 @@ import androidx.fragment.app.FragmentManager;
 
 import by.piupuupuu.twittergram.MainActivity;
 import by.piupuupuu.twittergram.R;
+import by.piupuupuu.twittergram.activity.MainWallActivity;
+import by.piupuupuu.twittergram.cache.CacheService;
+import by.piupuupuu.twittergram.model.User;
 import by.piupuupuu.twittergram.model.response.LoginResponse;
 import by.piupuupuu.twittergram.service.AuthenticationService;
 import by.piupuupuu.twittergram.service.AuthenticationServiceImpl;
 import lombok.Getter;
 import lombok.Setter;
+
 
 @Getter
 @Setter
@@ -28,6 +33,8 @@ public class LoginFragment extends Fragment {
     private FragmentManager manager;
     private Button createButton;
     private AuthenticationService authenticationService = AuthenticationServiceImpl.getInstance();
+    private CacheService cacheService = CacheService.getInstance();
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -47,6 +54,10 @@ public class LoginFragment extends Fragment {
         nickname = (EditText) view.findViewById(R.id.login_nickname);
         createButton = view.findViewById(R.id.createAccount);
 
+        if (cacheService.getTokenFromCache() != null) {
+            redirectToMainWall(cacheService.getTokenFromCache());
+        }
+
         createButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -58,10 +69,17 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 LoginResponse login = authenticationService.login(nickname.getText().toString(), password.getText().toString());
+                cacheService.createUserInfoCache(new User(nickname.getText().toString(), password.getText().toString(), login.getEmail()));
                 System.out.println(login.getToken());
+                redirectToMainWall(login.getNickname());
             }
         });
 
     }
 
+    private void redirectToMainWall(String extra) {
+        Intent intent = new Intent(getContext(), MainWallActivity.class);
+        intent.putExtra(MainActivity.NICKNAME_KEY, extra);
+        startActivity(intent);
+    }
 }
