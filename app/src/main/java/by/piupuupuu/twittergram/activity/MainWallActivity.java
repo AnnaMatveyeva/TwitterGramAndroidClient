@@ -34,12 +34,15 @@ public class MainWallActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.profile:
-                        Toast.makeText(MainWallActivity.this, "search", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainWallActivity.this, "profile", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.addPost:
                         Toast.makeText(MainWallActivity.this, "Add Post", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.search:
+                        Toast.makeText(MainWallActivity.this, "search", Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.home:
                         replaceWallFragment();
                         break;
                 }
