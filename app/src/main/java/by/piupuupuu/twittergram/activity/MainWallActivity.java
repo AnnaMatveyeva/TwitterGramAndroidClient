@@ -7,20 +7,24 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import by.piupuupuu.twittergram.R;
+import by.piupuupuu.twittergram.activity.fragment.WallFragment;
 
 public class MainWallActivity extends AppCompatActivity {
+
+    FragmentManager fragmentManager = getSupportFragmentManager();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_wall_activity);
-//        Intent intent = getIntent();
-//        String stringExtra = intent.getStringExtra(MainActivity.NICKNAME_KEY);
+
         init();
+        replaceWallFragment();
     }
 
     private void init() {
@@ -36,11 +40,21 @@ public class MainWallActivity extends AppCompatActivity {
                         Toast.makeText(MainWallActivity.this, "Add Post", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.search:
-                        Toast.makeText(MainWallActivity.this, "Profile", Toast.LENGTH_SHORT).show();
+                        replaceWallFragment();
                         break;
                 }
                 return true;
             }
         });
     }
+
+    protected void replaceWallFragment() {
+        fragmentManager
+                .beginTransaction()
+                .replace(R.id.frameContainer_wall_activity, new WallFragment(),
+                        "WallFragment")
+                .commit();
+    }
+
+
 }

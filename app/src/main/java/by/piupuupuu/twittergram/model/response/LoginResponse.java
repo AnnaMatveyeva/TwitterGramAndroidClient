@@ -7,6 +7,7 @@ public class LoginResponse {
 
     String nickname;
     String token;
+    String email;
 
     public LoginResponse(){}
 

@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
                 .beginTransaction()
                 .replace(R.id.frameContainer, new SingUpFragment(), "SingupFragment")
                 .commit();
+
     }
 
     @Override
@@ -44,6 +45,12 @@ public class MainActivity extends AppCompatActivity {
         init();
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        finish();
+    }
+
     public void init() {
         fragmentManager = getSupportFragmentManager();
         cacheService.setFilesDir(getFilesDir());
@@ -52,7 +59,10 @@ public class MainActivity extends AppCompatActivity {
             intent = new Intent(this, MainWallActivity.class);
             intent.putExtra(NICKNAME_KEY, cacheService.getTokenFromCache());
             startActivity(intent);
-        } else replaceLoginFragment();
+            finish();
+        } else {
+            replaceLoginFragment();
+        }
 
         findViewById(R.id.close_activity).setOnClickListener(
                 new View.OnClickListener() {
@@ -64,4 +74,6 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
     }
+
+
 }
