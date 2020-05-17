@@ -15,7 +15,6 @@ import by.piupuupuu.twittergram.MainActivity;
 import by.piupuupuu.twittergram.R;
 import by.piupuupuu.twittergram.activity.MainWallActivity;
 import by.piupuupuu.twittergram.cache.CacheService;
-import by.piupuupuu.twittergram.model.User;
 import by.piupuupuu.twittergram.model.response.LoginResponse;
 import by.piupuupuu.twittergram.service.AuthenticationService;
 import by.piupuupuu.twittergram.service.AuthenticationServiceImpl;
@@ -69,7 +68,7 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 LoginResponse login = authenticationService.login(nickname.getText().toString(), password.getText().toString());
-                cacheService.createUserInfoCache(new User(nickname.getText().toString(), password.getText().toString(), login.getEmail()));
+
                 System.out.println(login.getToken());
                 redirectToMainWall(login.getNickname());
             }

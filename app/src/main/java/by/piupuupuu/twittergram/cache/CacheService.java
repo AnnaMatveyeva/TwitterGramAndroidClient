@@ -1,5 +1,7 @@
 package by.piupuupuu.twittergram.cache;
 
+import android.content.Context;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.BufferedReader;
@@ -20,6 +22,7 @@ public class CacheService {
     private File tokenCache;
     private static CacheService instance;
     private File filesDir;
+    private Context context;
 
     public static CacheService getInstance() {
         if (instance == null) {
@@ -32,23 +35,28 @@ public class CacheService {
     @SneakyThrows
     public File createUserInfoCache(User user) {
         if (userInfoCache != null) {
+
             try (BufferedWriter buff = new BufferedWriter(new FileWriter(userInfoCache))) {
                 buff.write(mapper.writeValueAsString(user));
                 buff.flush();
             }
             return userInfoCache;
         } else {
-            userInfoCache = new File(filesDir.getPath().toString() + "/userFile.txt");
-            if (userInfoCache.createNewFile()) {
-                try (BufferedWriter buff = new BufferedWriter(new FileWriter(userInfoCache))) {
-                    buff.write(mapper.writeValueAsString(user));
-                    buff.flush();
-                }
+            try (BufferedWriter buff = new BufferedWriter(new FileWriter(userInfoCache))) {
+                buff.write(mapper.writeValueAsString(user));
+                buff.flush();
             }
             return userInfoCache;
         }
     }
 
+    @SneakyThrows
+    public void setDirs() {
+        userInfoCache = new File(filesDir.getPath().toString() + "/userFile.txt");
+        tokenCache = new File(filesDir.getPath().toString() + "/tokenFile.txt");
+        userInfoCache.createNewFile();
+        tokenCache.createNewFile();
+    }
     @SneakyThrows
     public File createTokenCache(String token) {
 
@@ -59,7 +67,7 @@ public class CacheService {
             }
             return tokenCache;
         } else {
-            tokenCache = new File(filesDir.getPath().toString() + "/tokenFile.txt");
+
             try (BufferedWriter buff = new BufferedWriter(new FileWriter(tokenCache))) {
                 buff.write(token);
                 buff.flush();

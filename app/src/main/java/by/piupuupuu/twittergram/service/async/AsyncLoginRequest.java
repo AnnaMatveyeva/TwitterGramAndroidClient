@@ -10,7 +10,12 @@ public class AsyncLoginRequest extends AsyncTask<LoginRequest, Integer, LoginRes
 
     @Override
     protected LoginResponse doInBackground(LoginRequest... arg) {
+
         return WebClientImpl.getInstance().login(arg[0]);
     }
 
+    @Override
+    protected void onProgressUpdate(Integer... values) {
+        System.out.println("executing task");
+    }
 }

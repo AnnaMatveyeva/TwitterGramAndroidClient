@@ -49,12 +49,5 @@ public class WallFragment extends Fragment {
             startActivity(intent);
             getActivity().finish();
         }
-        stories.sort((story1, story2) -> {
-            if (story1.getDate().isAfter(story2.getDate()))
-                return 1;
-            return 0;
-
-        });
-
     }
 }

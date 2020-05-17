@@ -9,7 +9,6 @@ import org.springframework.web.client.ResponseErrorHandler;
 import java.io.IOException;
 
 import by.piupuupuu.twittergram.cache.CacheService;
-import by.piupuupuu.twittergram.model.response.LoginResponse;
 import by.piupuupuu.twittergram.service.AuthenticationServiceImpl;
 
 import static org.springframework.http.HttpStatus.Series.CLIENT_ERROR;
@@ -36,9 +35,13 @@ public class RestTemplateResponseErrorHandler
             System.out.println("server error");
         } else if (httpResponse.getStatusCode()
                 .series() == CLIENT_ERROR) {
-            LoginResponse login = AuthenticationServiceImpl.getInstance()
-                    .login(CacheService.getInstance().getUserFromCache().getNickname(),
-                            CacheService.getInstance().getUserFromCache().getPassword());
+            if (CacheService.getInstance().getUserFromCache() != null) {
+                System.out.println("try to get new token");
+                AuthenticationServiceImpl.getInstance()
+                        .login(CacheService.getInstance().getUserFromCache().getNickname(),
+                                CacheService.getInstance().getUserFromCache().getPassword());
+                System.out.println("get new token");
+            } else throw new RuntimeException("cannot take token");
             if (httpResponse.getStatusCode() == HttpStatus.NOT_FOUND) {
                 throw new Resources.NotFoundException();
             }

@@ -6,21 +6,23 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.FormHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJacksonHttpMessageConverter;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import by.piupuupuu.twittergram.cache.CacheService;
 import by.piupuupuu.twittergram.model.Story;
 import by.piupuupuu.twittergram.model.request.LoginRequest;
 import by.piupuupuu.twittergram.model.request.SingUpRequest;
 import by.piupuupuu.twittergram.model.response.LoginResponse;
+import by.piupuupuu.twittergram.service.AuthenticationServiceImpl;
 
 
 public class WebClientImpl implements WebClient {
@@ -43,7 +45,6 @@ public class WebClientImpl implements WebClient {
         messageConverters.add(new FormHttpMessageConverter());
         messageConverters.add(new StringHttpMessageConverter());
         messageConverters.add(new MappingJacksonHttpMessageConverter());
-        restTemplate.setErrorHandler(new RestTemplateResponseErrorHandler());
         restTemplate.setMessageConverters(messageConverters);
     }
 
@@ -64,37 +65,76 @@ public class WebClientImpl implements WebClient {
 
     @Override
     public List<Story> getAllStories(String token) {
+        System.out.println("token " + token);
+        List<Story> stories;
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.set("Authorization", "Bearer " + token);
-        HttpEntity<String> entity = new HttpEntity<String>(headers);
-        System.out.println("token + " + token);
-        ResponseEntity<Story[]> exchange = restTemplate.exchange(baseUrl + "api/story/for-client?sortBy=date", HttpMethod.GET, entity, Story[].class);
-        return Arrays.asList(exchange.getBody());
+        try {
+            stories = Arrays.asList(restTemplate.exchange(baseUrl + "api/story/for-client?sortBy=date",
+                    HttpMethod.GET,
+                    getHeader(token),
+                    Story[].class)
+                    .getBody());
+        } catch (RestClientException ex) {
 
+            AuthenticationServiceImpl.getInstance().login(CacheService.getInstance().getUserFromCache().getNickname(),
+                    CacheService.getInstance().getUserFromCache().getNickname());
+            stories = getAllStories(CacheService.getInstance().getTokenFromCache());
+        }
+        return stories;
     }
 
     @Override
     public Story sendLikeToStory(String storyId, String token) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.set("Authorization", "Bearer " + token);
-        HttpEntity<String> entity = new HttpEntity<String>(headers);
-        System.out.println("token + " + token);
+        Story story;
+        try {
+            story = restTemplate.exchange(baseUrl + "api/story/like/" + storyId, HttpMethod.POST, getHeader(token), Story.class).getBody();
+        } catch (RestClientException ex) {
 
-        return restTemplate.exchange(baseUrl + "api/story/like/" + storyId, HttpMethod.POST, entity, Story.class).getBody();
+            AuthenticationServiceImpl.getInstance().login(CacheService.getInstance().getUserFromCache().getNickname(),
+                    CacheService.getInstance().getUserFromCache().getNickname());
+            story = sendLikeToStory(storyId, CacheService.getInstance().getTokenFromCache());
+        }
+        return story;
     }
 
     @Override
     public Story deleteLikeFromStory(String storyId, String token) {
+        Story story;
+        try {
+            story = restTemplate.exchange(baseUrl + "api/story/like/delete/" + storyId, HttpMethod.POST, getHeader(token), Story.class).getBody();
+        } catch (RestClientException ex) {
+
+            AuthenticationServiceImpl.getInstance().login(CacheService.getInstance().getUserFromCache().getNickname(),
+                    CacheService.getInstance().getUserFromCache().getNickname());
+            story = deleteLikeFromStory(storyId, CacheService.getInstance().getTokenFromCache());
+        }
+        return story;
+    }
+
+    @Override
+    public List<Story> getByUserId(String token) {
+        List<Story> stories;
+        try {
+            stories = Arrays.asList(restTemplate.exchange(baseUrl + "api/story/for-client-get-by-owner?sortBy=date&userId=",
+                    HttpMethod.GET,
+                    getHeader(token),
+                    Story[].class).getBody());
+        } catch (RestClientException ex) {
+
+            System.out.println("create new login");
+            AuthenticationServiceImpl.getInstance().login(CacheService.getInstance().getUserFromCache().getNickname(),
+                    CacheService.getInstance().getUserFromCache().getNickname());
+            stories = getByUserId(CacheService.getInstance().getTokenFromCache());
+        }
+        return stories;
+    }
+
+    public HttpEntity<String> getHeader(String token) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set("Authorization", "Bearer " + token);
+        headers.set("Connection", "close");
         HttpEntity<String> entity = new HttpEntity<String>(headers);
-        System.out.println("token + " + token);
-
-        ResponseEntity<Story> body = restTemplate.exchange(baseUrl + "api/story/like/delete/" + storyId, HttpMethod.POST, entity, Story.class);
-        return body.getBody();
+        return entity;
     }
 }
