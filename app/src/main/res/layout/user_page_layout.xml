@@ -32,6 +32,20 @@
             android:text="mitch.tabian"
             android:textColor="@color/black"
             android:textSize="30sp" />
+
+        <Button
+            android:id="@+id/profile_logout"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:text="logout"
+            android:textSize="20sp"
+            android:textColor="@color/white"
+            android:background="@drawable/logout_button_selector"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="5dp" />
+
+
     </RelativeLayout>
 
     <androidx.recyclerview.widget.RecyclerView

@@ -54,7 +54,7 @@ public class LoginFragment extends Fragment {
         createButton = view.findViewById(R.id.createAccount);
 
         if (cacheService.getTokenFromCache() != null) {
-            redirectToMainWall(cacheService.getTokenFromCache());
+            redirectToMainWall();
         }
 
         createButton.setOnClickListener(new View.OnClickListener() {
@@ -70,15 +70,15 @@ public class LoginFragment extends Fragment {
                 LoginResponse login = authenticationService.login(nickname.getText().toString(), password.getText().toString());
 
                 System.out.println(login.getToken());
-                redirectToMainWall(login.getNickname());
+                redirectToMainWall();
             }
         });
 
     }
 
-    private void redirectToMainWall(String extra) {
+    private void redirectToMainWall() {
         Intent intent = new Intent(getContext(), MainWallActivity.class);
-        intent.putExtra(MainActivity.NICKNAME_KEY, extra);
         startActivity(intent);
+        getActivity().finish();
     }
 }

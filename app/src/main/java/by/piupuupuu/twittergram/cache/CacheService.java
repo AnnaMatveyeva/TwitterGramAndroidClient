@@ -99,7 +99,11 @@ public class CacheService {
                 return null;
             } else return getTokenFromCache();
         }
+    }
 
+    public void logout() {
+        userInfoCache.delete();
+        tokenCache.delete();
     }
 
 

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -29,6 +30,7 @@ public class UserProfileFragment extends Fragment {
     private List<Story> stories;
     private ImageView userPhoto;
     private TextView username;
+    private Button logoutBtn;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -56,6 +58,18 @@ public class UserProfileFragment extends Fragment {
         userPhoto.setImageResource(R.drawable.usericonfore);
         username = view.findViewById(R.id.profile_layout_username);
         username.setText(CacheService.getInstance().getUserFromCache().getNickname());
+        logoutBtn = view.findViewById(R.id.profile_logout);
+
+        logoutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CacheService.getInstance().logout();
+                Intent intent = new Intent(view.getContext(), MainActivity.class);
+                startActivity(intent);
+                getActivity().finish();
+            }
+        });
+
         if (stories == null) {
             Intent intent = new Intent(getContext(), MainActivity.class);
             startActivity(intent);
