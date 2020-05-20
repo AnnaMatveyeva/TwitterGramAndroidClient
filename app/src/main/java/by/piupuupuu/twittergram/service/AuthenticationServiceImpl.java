@@ -30,6 +30,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         AsyncLoginRequest asyncLoginRequest = new AsyncLoginRequest();
 
         LoginResponse loginResponse = asyncLoginRequest.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, request).get();
+        if (loginResponse == null) {
+            return null;
+        }
         cacheService.createTokenCache(loginResponse.getToken());
         cacheService.createUserInfoCache(new User(nickname, password, loginResponse.getEmail()));
         return loginResponse;

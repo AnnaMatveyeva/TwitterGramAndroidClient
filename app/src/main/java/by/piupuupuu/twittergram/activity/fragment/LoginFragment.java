@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -68,9 +69,11 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 LoginResponse login = authenticationService.login(nickname.getText().toString(), password.getText().toString());
-
-                System.out.println(login.getToken());
-                redirectToMainWall();
+                if (login != null) {
+                    System.out.println(login.getToken());
+                    redirectToMainWall();
+                } else
+                    Toast.makeText(getContext(), "Invalid nickname or password", Toast.LENGTH_SHORT).show();
             }
         });
 

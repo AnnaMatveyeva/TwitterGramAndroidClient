@@ -6,10 +6,12 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.FormHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJacksonHttpMessageConverter;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
@@ -51,9 +53,17 @@ public class WebClientImpl implements WebClient {
     @Override
     public LoginResponse login(LoginRequest request) {
         System.out.println(request.getNickname() + " " + request.getPassword());
-        return restTemplate.postForObject(baseUrl + "login",
-                request,
-                LoginResponse.class);
+        ResponseEntity<LoginResponse> exchangeResponse;
+        try {
+            exchangeResponse = restTemplate.exchange(baseUrl + "login",
+                    HttpMethod.POST,
+                    getHeadersAndBody(request),
+                    LoginResponse.class);
+            return exchangeResponse.getBody();
+        } catch (HttpClientErrorException ex) {
+            return null;
+        }
+
     }
 
     @Override
@@ -129,12 +139,18 @@ public class WebClientImpl implements WebClient {
         return stories;
     }
 
-    public HttpEntity<String> getHeader(String token) {
+    private HttpEntity<String> getHeader(String token) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set("Authorization", "Bearer " + token);
         headers.set("Connection", "close");
-        HttpEntity<String> entity = new HttpEntity<String>(headers);
-        return entity;
+        return new HttpEntity<String>(headers);
+    }
+
+    private HttpEntity<LoginRequest> getHeadersAndBody(LoginRequest request) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set("Connection", "close");
+        return new HttpEntity<LoginRequest>(request, headers);
     }
 }
