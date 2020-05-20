@@ -31,6 +31,8 @@ public class UserProfileFragment extends Fragment {
     private ImageView userPhoto;
     private TextView username;
     private Button logoutBtn;
+    private TextView didntPost;
+    private RecyclerView recyclerView;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -41,7 +43,7 @@ public class UserProfileFragment extends Fragment {
 
         init();
         UserProfileAdapter userAdapter = new UserProfileAdapter(getContext(), stories);
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.profile_layout_items_list);
+
         LinearLayoutManager llm = new LinearLayoutManager(view.getContext());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(llm);
@@ -53,13 +55,14 @@ public class UserProfileFragment extends Fragment {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void init() {
+        recyclerView = view.findViewById(R.id.profile_layout_items_list);
         stories = PostService.getInstance().getStoriesByUserId();
         userPhoto = view.findViewById(R.id.profile_layout_photo);
         userPhoto.setImageResource(R.drawable.usericonfore);
         username = view.findViewById(R.id.profile_layout_username);
         username.setText(CacheService.getInstance().getUserFromCache().getNickname());
         logoutBtn = view.findViewById(R.id.profile_logout);
-
+        didntPost = view.findViewById(R.id.didntPost);
         logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,7 +72,14 @@ public class UserProfileFragment extends Fragment {
                 getActivity().finish();
             }
         });
+        if (stories.isEmpty()) {
+            recyclerView.setVisibility(View.INVISIBLE);
+            didntPost.setVisibility(View.VISIBLE);
+        } else {
+            recyclerView.setVisibility(View.VISIBLE);
+            didntPost.setVisibility(View.INVISIBLE);
 
+        }
         if (stories == null) {
             Intent intent = new Intent(getContext(), MainActivity.class);
             startActivity(intent);

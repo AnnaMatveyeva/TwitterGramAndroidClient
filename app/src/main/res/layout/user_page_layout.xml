@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -45,13 +45,26 @@
             android:layout_marginRight="15dp"
             android:layout_marginTop="5dp" />
 
-
     </RelativeLayout>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:layout_below="@id/relLayout1"
         android:id="@+id/profile_layout_items_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:visibility="visible" />
+
+    <TextView
+        android:id="@+id/didntPost"
+        android:layout_below="@id/relLayout1"
+        android:layout_marginTop="50dp"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:text="@string/you_didn_t_post_anything"
+        android:textSize="22sp"
+        android:gravity="center_horizontal"
+        android:textColor="@color/black"
+        android:visibility="invisible" />
 
 
-</LinearLayout>
+</RelativeLayout>
