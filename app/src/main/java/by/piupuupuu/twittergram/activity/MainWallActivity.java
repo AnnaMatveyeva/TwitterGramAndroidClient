@@ -12,6 +12,7 @@ import androidx.fragment.app.FragmentManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import by.piupuupuu.twittergram.R;
+import by.piupuupuu.twittergram.activity.fragment.SearchFragment;
 import by.piupuupuu.twittergram.activity.fragment.UserProfileFragment;
 import by.piupuupuu.twittergram.activity.fragment.WallFragment;
 
@@ -41,7 +42,7 @@ public class MainWallActivity extends AppCompatActivity {
                         Toast.makeText(MainWallActivity.this, "Add Post", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.search:
-                        Toast.makeText(MainWallActivity.this, "search", Toast.LENGTH_SHORT).show();
+                        replaceSearchFragment();
                         break;
                     case R.id.home:
                         replaceWallFragment();
@@ -60,6 +61,13 @@ public class MainWallActivity extends AppCompatActivity {
                 .commit();
     }
 
+    protected void replaceSearchFragment() {
+        fragmentManager
+                .beginTransaction()
+                .replace(R.id.frameContainer_wall_activity, new SearchFragment(),
+                        "SearchFragment")
+                .commit();
+    }
     protected void replaceUserProfileFragment() {
         fragmentManager
                 .beginTransaction()

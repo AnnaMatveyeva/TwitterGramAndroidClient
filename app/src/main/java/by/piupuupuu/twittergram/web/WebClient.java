@@ -13,6 +13,10 @@ public interface WebClient {
 
     LoginRequest singup(SingUpRequest request);
 
+    List<Story> findStoriesByText(String text, String token);
+
+    List<Story> findStoriesByNickname(String text, String token);
+
     List<Story> getAllStories(String token);
 
     Story sendLikeToStory(String storyId, String token);
