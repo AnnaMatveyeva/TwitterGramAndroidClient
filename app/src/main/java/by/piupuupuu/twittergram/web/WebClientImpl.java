@@ -57,7 +57,7 @@ public class WebClientImpl implements WebClient {
         try {
             exchangeResponse = restTemplate.exchange(baseUrl + "login",
                     HttpMethod.POST,
-                    getHeadersAndBody(request),
+                    getHeadersAndBodyForLoginRequest(request),
                     LoginResponse.class);
             return exchangeResponse.getBody();
         } catch (HttpClientErrorException ex) {
@@ -68,9 +68,16 @@ public class WebClientImpl implements WebClient {
 
     @Override
     public LoginRequest singup(SingUpRequest request) {
-        return restTemplate.postForObject(baseUrl + "registration",
-                request,
-                LoginRequest.class);
+        ResponseEntity<LoginRequest> exchangeResponse;
+        try {
+            exchangeResponse = restTemplate.exchange(baseUrl + "registration",
+                    HttpMethod.POST,
+                    getHeadersAndBodyForSingupRequest(request),
+                    LoginRequest.class);
+            return exchangeResponse.getBody();
+        } catch (HttpClientErrorException ex) {
+            return null;
+        }
     }
 
     @Override
@@ -147,10 +154,17 @@ public class WebClientImpl implements WebClient {
         return new HttpEntity<String>(headers);
     }
 
-    private HttpEntity<LoginRequest> getHeadersAndBody(LoginRequest request) {
+    private HttpEntity<LoginRequest> getHeadersAndBodyForLoginRequest(LoginRequest request) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set("Connection", "close");
         return new HttpEntity<LoginRequest>(request, headers);
+    }
+
+    private HttpEntity<SingUpRequest> getHeadersAndBodyForSingupRequest(SingUpRequest request) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set("Connection", "close");
+        return new HttpEntity<SingUpRequest>(request, headers);
     }
 }

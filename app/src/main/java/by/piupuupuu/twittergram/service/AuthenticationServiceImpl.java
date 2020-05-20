@@ -44,6 +44,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         SingUpRequest singUpRequest = new SingUpRequest(nickname, email, password, confirmPass);
         AsyncSingUpRequest asyncSingUpRequest = new AsyncSingUpRequest();
         LoginResponse loginResponse = asyncSingUpRequest.execute(singUpRequest).get();
+        if (loginResponse == null) {
+            return null;
+        }
         cacheService.createTokenCache(loginResponse.getToken());
         cacheService.createUserInfoCache(new User(nickname, email, password));
         return loginResponse;

@@ -12,7 +12,9 @@ public class AsyncSingUpRequest extends AsyncTask<SingUpRequest, Integer, LoginR
     @Override
     protected LoginResponse doInBackground(SingUpRequest... arg) {
         LoginRequest loginRequest = WebClientImpl.getInstance().singup(arg[0]);
-        return WebClientImpl.getInstance().login(loginRequest);
+        if (loginRequest != null) {
+            return WebClientImpl.getInstance().login(loginRequest);
+        } else return null;
     }
 
 }
