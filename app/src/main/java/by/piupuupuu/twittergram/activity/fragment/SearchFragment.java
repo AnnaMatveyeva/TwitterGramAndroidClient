@@ -32,6 +32,7 @@ public class SearchFragment extends Fragment {
     private TextView notFoundText;
     private PostAdapter postAdapter;
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -39,7 +40,14 @@ public class SearchFragment extends Fragment {
         view = inflater.inflate(R.layout.search_layout, container, false);
 
         init();
-        postAdapter = new PostAdapter(getContext(), stories);
+        postAdapter = new PostAdapter(getContext(), stories, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TextView viewById = (TextView) view.findViewById(R.id.username_story_item);
+                searchLine.setText(viewById.getText().toString());
+                searchButton.callOnClick();
+            }
+        });
 
         LinearLayoutManager llm = new LinearLayoutManager(view.getContext());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
@@ -63,18 +71,26 @@ public class SearchFragment extends Fragment {
         notFoundText.setVisibility(View.INVISIBLE);
 
         searchButton.setOnClickListener(v -> {
-            stories.clear();
-            stories.addAll(PostService.getInstance()
-                    .findStoriesByText(searchLine.getText().toString()));
+            String text = searchLine.getText().toString();
+            if (!text.isEmpty()) {
 
-            if (stories.isEmpty()) {
-                recyclerView.setVisibility(View.INVISIBLE);
-                notFoundText.setVisibility(View.VISIBLE);
-            } else {
-                recyclerView.setVisibility(View.VISIBLE);
+                stories.clear();
+                if (text.startsWith("@")) {
+                    stories.addAll(PostService.getInstance()
+                            .findAllByAuthor(text.substring(1)));
+                } else {
+                    stories.addAll(PostService.getInstance()
+                            .findStoriesByText(searchLine.getText().toString()));
+                }
+                if (stories.isEmpty()) {
+                    recyclerView.setVisibility(View.INVISIBLE);
+                    notFoundText.setVisibility(View.VISIBLE);
+                } else {
+                    recyclerView.setVisibility(View.VISIBLE);
 
-                postAdapter.notifyDataSetChanged();
-                notFoundText.setVisibility(View.INVISIBLE);
+                    postAdapter.notifyDataSetChanged();
+                    notFoundText.setVisibility(View.INVISIBLE);
+                }
             }
 
         });

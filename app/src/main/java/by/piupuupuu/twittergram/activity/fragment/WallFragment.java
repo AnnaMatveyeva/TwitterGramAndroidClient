@@ -32,7 +32,12 @@ public class WallFragment extends Fragment {
         view = inflater.inflate(R.layout.posts_wall_layout, container, false);
 
         init();
-        PostAdapter postAdapter = new PostAdapter(getContext(), stories);
+        PostAdapter postAdapter = new PostAdapter(getContext(), stories, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.list_wall_recycle_view);
 
         recyclerView.setAdapter(postAdapter);

@@ -7,6 +7,7 @@ import by.piupuupuu.twittergram.model.Story;
 import by.piupuupuu.twittergram.model.response.LoginResponse;
 import by.piupuupuu.twittergram.service.async.AsyncDeleteLikeFromStoryRequest;
 import by.piupuupuu.twittergram.service.async.AsyncGetAllStoryRequest;
+import by.piupuupuu.twittergram.service.async.AsyncGetStoriesByNicknameRequest;
 import by.piupuupuu.twittergram.service.async.AsyncGetStoriesByOwner;
 import by.piupuupuu.twittergram.service.async.AsyncGetStoriesByTextRequest;
 import by.piupuupuu.twittergram.service.async.AsyncSendLikeToStoryRequest;
@@ -48,11 +49,24 @@ public class PostService {
         if (tokenFromCache != null) {
             List<Story> stories = request.execute(text, tokenFromCache).get();
             return stories;
-
         } else if (CacheService.getInstance().getUserFromCache() != null) {
             LoginResponse login = authenticationService.login(CacheService.getInstance().getUserFromCache().getNickname(),
                     CacheService.getInstance().getUserFromCache().getPassword());
             return request.execute(text, login.getToken()).get();
+        } else return null;
+    }
+
+    @SneakyThrows
+    public List<Story> findAllByAuthor(String nickname) {
+        String tokenFromCache = CacheService.getInstance().getTokenFromCache();
+        AsyncGetStoriesByNicknameRequest request = new AsyncGetStoriesByNicknameRequest();
+        if (tokenFromCache != null) {
+            List<Story> stories = request.execute(nickname, tokenFromCache).get();
+            return stories;
+        } else if (CacheService.getInstance().getUserFromCache() != null) {
+            LoginResponse login = authenticationService.login(CacheService.getInstance().getUserFromCache().getNickname(),
+                    CacheService.getInstance().getUserFromCache().getPassword());
+            return request.execute(nickname, login.getToken()).get();
         } else return null;
     }
 

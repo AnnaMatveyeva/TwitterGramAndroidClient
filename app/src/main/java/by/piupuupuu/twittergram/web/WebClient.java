@@ -15,6 +15,8 @@ public interface WebClient {
 
     List<Story> findStoriesByText(String text, String token);
 
+    List<Story> findStoriesByNickname(String text, String token);
+
     List<Story> getAllStories(String token);
 
     Story sendLikeToStory(String storyId, String token);

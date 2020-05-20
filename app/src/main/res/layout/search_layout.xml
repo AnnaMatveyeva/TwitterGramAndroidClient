@@ -20,8 +20,8 @@
         <EditText
             android:id="@+id/searchLine"
             android:layout_width="match_parent"
-            android:text="sdfsg"
             android:layout_marginLeft="40dp"
+            android:paddingStart="2dp"
             android:layout_marginRight="110dp"
             android:layout_height="70dp" />
 

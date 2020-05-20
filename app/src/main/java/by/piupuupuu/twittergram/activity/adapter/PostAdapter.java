@@ -25,6 +25,7 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context context;
     private List<Story> stories;
+    private View.OnClickListener clickListener;
 
     @NonNull
     @Override
@@ -70,6 +71,9 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             username.setText(story.getUsername());
             postDate.setText(story.getDate().toString());
             image.setImageResource(R.drawable.usericonfore);
+
+            username.setOnClickListener(clickListener);
+
             if (story.getIsLiked()) {
                 red_like.setVisibility(ImageView.VISIBLE);
                 white_like.setVisibility(ImageView.INVISIBLE);
