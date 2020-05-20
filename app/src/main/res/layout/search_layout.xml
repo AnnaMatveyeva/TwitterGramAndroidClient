@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <RelativeLayout
+        android:id="@+id/relLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="15dp"
+        android:outlineSpotShadowColor="@color/black">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/search_image"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_margin="10dp" />
+
+        <EditText
+            android:id="@+id/searchLine"
+            android:layout_width="match_parent"
+            android:text="sdfsg"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="110dp"
+            android:layout_height="70dp" />
+
+
+        <Button
+            android:id="@+id/searchBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="15dp"
+            android:background="@drawable/search_button_selector"
+            android:text="search"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
+
+    </RelativeLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/stories_list_search"
+        android:layout_width="match_parent"
+        android:layout_below="@id/relLayout2"
+        android:layout_height="match_parent" />
+
+    <TextView
+        android:id="@+id/notFoundText"
+        android:layout_below="@id/relLayout2"
+        android:layout_marginTop="50dp"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:text="@string/not_found"
+        android:textSize="22sp"
+        android:gravity="center_horizontal"
+        android:textColor="@color/black"
+        android:visibility="invisible" />
+</RelativeLayout>

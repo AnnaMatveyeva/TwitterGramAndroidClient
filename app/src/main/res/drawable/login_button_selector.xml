@@ -3,7 +3,7 @@
 
     <!-- When item pressed this item will be triggered -->
     <item android:state_pressed="true"><shape android:shape="rectangle">
-        <corners android:radius="70dp" />
+        <corners android:radius="30dp" />
 
         <solid android:color="@color/button_selector_color" />
     </shape></item>

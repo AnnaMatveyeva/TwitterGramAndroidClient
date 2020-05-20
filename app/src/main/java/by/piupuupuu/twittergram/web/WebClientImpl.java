@@ -101,6 +101,25 @@ public class WebClientImpl implements WebClient {
     }
 
     @Override
+    public List<Story> findStoriesByText(String text, String token) {
+        List<Story> stories;
+        try {
+            stories = Arrays.asList(restTemplate.exchange(baseUrl + "api/story/for-client?sortBy=date&text=" + text,
+                    HttpMethod.GET,
+                    getHeader(token),
+                    Story[].class)
+                    .getBody());
+            System.out.println(stories.size());
+        } catch (RestClientException ex) {
+
+            AuthenticationServiceImpl.getInstance().login(CacheService.getInstance().getUserFromCache().getNickname(),
+                    CacheService.getInstance().getUserFromCache().getNickname());
+            stories = getAllStories(CacheService.getInstance().getTokenFromCache());
+        }
+        return stories;
+    }
+
+    @Override
     public Story sendLikeToStory(String storyId, String token) {
         Story story;
         try {
