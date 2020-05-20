@@ -1,5 +1,7 @@
 package by.piupuupuu.twittergram.service;
 
+import android.os.AsyncTask;
+
 import by.piupuupuu.twittergram.cache.CacheService;
 import by.piupuupuu.twittergram.model.User;
 import by.piupuupuu.twittergram.model.request.LoginRequest;
@@ -27,9 +29,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         LoginRequest request = new LoginRequest(nickname, password);
         AsyncLoginRequest asyncLoginRequest = new AsyncLoginRequest();
 
-        LoginResponse loginResponse = asyncLoginRequest.execute(request).get();
+        LoginResponse loginResponse = asyncLoginRequest.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, request).get();
+        if (loginResponse == null) {
+            return null;
+        }
         cacheService.createTokenCache(loginResponse.getToken());
-        System.out.println("write token");
+        cacheService.createUserInfoCache(new User(nickname, password, loginResponse.getEmail()));
         return loginResponse;
     }
 
@@ -39,9 +44,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         SingUpRequest singUpRequest = new SingUpRequest(nickname, email, password, confirmPass);
         AsyncSingUpRequest asyncSingUpRequest = new AsyncSingUpRequest();
         LoginResponse loginResponse = asyncSingUpRequest.execute(singUpRequest).get();
+        if (loginResponse == null) {
+            return null;
+        }
         cacheService.createTokenCache(loginResponse.getToken());
         cacheService.createUserInfoCache(new User(nickname, email, password));
-        System.out.println("write userinfo and token");
         return loginResponse;
     }
 

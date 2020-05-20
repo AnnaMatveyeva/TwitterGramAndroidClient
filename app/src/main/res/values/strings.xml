@@ -9,4 +9,5 @@
     <string name="signUp">SingUp</string>
     <string name="email">Email</string>
     <string name="confirmPassword">Confirm password</string>
+    <string name="you_didn_t_post_anything">You didn\'t post anything</string>
 </resources>

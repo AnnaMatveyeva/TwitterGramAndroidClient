@@ -9,8 +9,8 @@ import lombok.Data;
 public class User {
 
     String nickname;
-    String email;
     String password;
+    String email;
 
     public User() {
     }

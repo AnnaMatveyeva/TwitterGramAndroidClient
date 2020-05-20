@@ -18,4 +18,6 @@ public interface WebClient {
     Story sendLikeToStory(String storyId, String token);
 
     Story deleteLikeFromStory(String storyId, String token);
+
+    List<Story> getByUserId(String token);
 }

@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
     private CacheService cacheService = CacheService.getInstance();
 
 
-    protected void replaceLoginFragment() {
+    public static void replaceLoginFragment() {
         fragmentManager
                 .beginTransaction()
                 .replace(R.id.frameContainer, new LoginFragment(),
@@ -54,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
     public void init() {
         fragmentManager = getSupportFragmentManager();
         cacheService.setFilesDir(getFilesDir());
+        cacheService.setContext(getApplicationContext());
+        cacheService.setDirs();
         Intent intent;
         if (cacheService.getTokenFromCache() != null) {
             intent = new Intent(this, MainWallActivity.class);

@@ -1,16 +1,19 @@
 package by.piupuupuu.twittergram.activity.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import by.piupuupuu.twittergram.R;
+import by.piupuupuu.twittergram.activity.MainWallActivity;
 import by.piupuupuu.twittergram.model.response.LoginResponse;
 import by.piupuupuu.twittergram.service.AuthenticationService;
 import by.piupuupuu.twittergram.service.AuthenticationServiceImpl;
@@ -55,10 +58,17 @@ public class SingUpFragment extends Fragment {
                         password.getText().toString(),
                         confirmPass.getText().toString(),
                         email.getText().toString());
-                System.out.println(singup.getToken());
+                if (singup != null) {
+                    redirectToMainWall();
+                } else Toast.makeText(getContext(), "Invalid input", Toast.LENGTH_SHORT).show();
             }
         });
 
     }
 
+    private void redirectToMainWall() {
+        Intent intent = new Intent(getContext(), MainWallActivity.class);
+        startActivity(intent);
+        getActivity().finish();
+    }
 }

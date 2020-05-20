@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -15,7 +16,6 @@ import by.piupuupuu.twittergram.MainActivity;
 import by.piupuupuu.twittergram.R;
 import by.piupuupuu.twittergram.activity.MainWallActivity;
 import by.piupuupuu.twittergram.cache.CacheService;
-import by.piupuupuu.twittergram.model.User;
 import by.piupuupuu.twittergram.model.response.LoginResponse;
 import by.piupuupuu.twittergram.service.AuthenticationService;
 import by.piupuupuu.twittergram.service.AuthenticationServiceImpl;
@@ -55,7 +55,7 @@ public class LoginFragment extends Fragment {
         createButton = view.findViewById(R.id.createAccount);
 
         if (cacheService.getTokenFromCache() != null) {
-            redirectToMainWall(cacheService.getTokenFromCache());
+            redirectToMainWall();
         }
 
         createButton.setOnClickListener(new View.OnClickListener() {
@@ -69,17 +69,19 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 LoginResponse login = authenticationService.login(nickname.getText().toString(), password.getText().toString());
-                cacheService.createUserInfoCache(new User(nickname.getText().toString(), password.getText().toString(), login.getEmail()));
-                System.out.println(login.getToken());
-                redirectToMainWall(login.getNickname());
+                if (login != null) {
+                    System.out.println(login.getToken());
+                    redirectToMainWall();
+                } else
+                    Toast.makeText(getContext(), "Invalid nickname or password", Toast.LENGTH_SHORT).show();
             }
         });
 
     }
 
-    private void redirectToMainWall(String extra) {
+    private void redirectToMainWall() {
         Intent intent = new Intent(getContext(), MainWallActivity.class);
-        intent.putExtra(MainActivity.NICKNAME_KEY, extra);
         startActivity(intent);
+        getActivity().finish();
     }
 }

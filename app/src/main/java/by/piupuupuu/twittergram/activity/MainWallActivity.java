@@ -12,6 +12,7 @@ import androidx.fragment.app.FragmentManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import by.piupuupuu.twittergram.R;
+import by.piupuupuu.twittergram.activity.fragment.UserProfileFragment;
 import by.piupuupuu.twittergram.activity.fragment.WallFragment;
 
 public class MainWallActivity extends AppCompatActivity {
@@ -34,7 +35,7 @@ public class MainWallActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.profile:
-                        Toast.makeText(MainWallActivity.this, "profile", Toast.LENGTH_SHORT).show();
+                        replaceUserProfileFragment();
                         break;
                     case R.id.addPost:
                         Toast.makeText(MainWallActivity.this, "Add Post", Toast.LENGTH_SHORT).show();
@@ -59,5 +60,11 @@ public class MainWallActivity extends AppCompatActivity {
                 .commit();
     }
 
-
+    protected void replaceUserProfileFragment() {
+        fragmentManager
+                .beginTransaction()
+                .replace(R.id.frameContainer_wall_activity, new UserProfileFragment(),
+                        "UserProfileFragment")
+                .commit();
+    }
 }
